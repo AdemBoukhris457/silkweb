@@ -1,11 +1,11 @@
 site_name: Silkweb
 site_description: The LLM-native Python web scraping library
 site_author: Silkweb contributors
-site_url: https://pypi.org/project/silkweb/
+# Canonical URL for the published docs site (GitHub Pages project site).
+site_url: https://ademboukhris457.github.io/silkweb/
 
-# Uncomment when you have a public repository URL (match pyproject [project.urls] Repository).
-# repo_url: https://github.com/your-org/silkweb
-# repo_name: your-org/silkweb
+repo_url: https://github.com/AdemBoukhris457/silkweb
+repo_name: AdemBoukhris457/silkweb
 
 copyright: Copyright &copy; Silkweb contributors
 
