@@ -1,0 +1,17 @@
+name: google-serp
+description: Extract top organic results from a Google search results page.
+url_pattern: "^https?://(www\\.)?google\\.[^/]+/search\\?.*$"
+silkql_query: |
+  {
+    query(optional)
+    results[] {
+      title
+      url(url)
+      snippet(optional)
+    }
+  }
+fetch_tier: 3
+wait_for: "#search"
+notes: |
+  Google SERPs are dynamic and frequently change. Prefer Tier 3 with stealth + proxies.
+

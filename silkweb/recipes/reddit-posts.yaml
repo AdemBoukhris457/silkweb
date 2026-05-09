@@ -1,0 +1,19 @@
+name: reddit-posts
+description: Extract posts from a subreddit listing page.
+url_pattern: "^https?://(www\\.)?reddit\\.com/r/[^/]+/?$"
+silkql_query: |
+  {
+    subreddit(optional)
+    posts[] {
+      title
+      url(url, optional)
+      author(optional)
+      score(int, optional)
+      comments(int, optional)
+    }
+  }
+fetch_tier: 2
+wait_for: "main"
+notes: |
+  Reddit is dynamic; Tier 2 is usually sufficient. Logged-out pages may vary by region.
+

@@ -1,0 +1,18 @@
+name: github-repo
+description: Extract basic repository metadata from a GitHub repo page.
+url_pattern: "^https?://(www\\.)?github\\.com/[^/]+/[^/]+/?$"
+silkql_query: |
+  {
+    name
+    owner
+    description(optional)
+    stars(int, optional)
+    forks(int, optional)
+    issues(int, optional)
+    license(optional)
+  }
+fetch_tier: 2
+wait_for: "main"
+notes: |
+  GitHub content is often dynamic; this recipe uses Tier 2.
+

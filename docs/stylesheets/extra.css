@@ -1,0 +1,13 @@
+:root {
+  --md-typeset-font-size: 0.92rem;
+  --md-code-font-size: 0.82em;
+}
+
+.md-typeset code {
+  font-feature-settings: "liga" 0;
+}
+
+.md-typeset table:not([class]) {
+  display: table;
+  max-width: 100%;
+}

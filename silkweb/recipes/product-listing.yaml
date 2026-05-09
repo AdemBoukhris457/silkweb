@@ -1,0 +1,17 @@
+name: product-listing
+description: Extract a product listing grid/table into structured items.
+url_pattern: "^https?://"
+silkql_query: |
+  {
+    items[] {
+      name
+      price(currency, optional)
+      url(url, optional)
+      rating(float, optional)
+    }
+  }
+fetch_tier: auto
+wait_for: "main"
+notes: |
+  Generic product listing recipe for e-commerce category/search pages.
+

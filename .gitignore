@@ -1,0 +1,48 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+.venv/
+venv/
+env/
+ENV/
+
+build/
+dist/
+*.egg-info/
+
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Local state
+*.log
+silkweb_replays/
+
+# Secrets (copy from env.sample)
+.env
+.env.local
+
+# MkDocs
+site/
+
+# Local examples and notebooks (not published to remote)
+examples/
+notebooks/
+
+# Optional local-only files (not part of the published tree)
+.githooks/
+
+# Local-only names (not published)
+*.example
+gitignore.template

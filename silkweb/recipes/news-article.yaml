@@ -1,0 +1,15 @@
+name: news-article
+description: Extract title/author/date and main content from a news article page.
+url_pattern: "^https?://"
+silkql_query: |
+  {
+    title(optional)
+    author(optional)
+    published_at(iso_date, optional)
+    content(optional)
+  }
+fetch_tier: auto
+wait_for: "article"
+notes: |
+  Generic recipe for articles. Works best when the page contains a semantic <article> element.
+

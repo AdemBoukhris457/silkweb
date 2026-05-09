@@ -1,0 +1,17 @@
+name: amazon-product
+description: Extract product title/price/rating from an Amazon product page.
+url_pattern: "^https?://(www\\.)?amazon\\.[^/]+/.*/dp/[A-Z0-9]{10}.*$"
+silkql_query: |
+  {
+    title
+    price(currency, optional)
+    currency(optional)
+    rating(float, optional)
+    review_count(int, optional)
+    availability(optional)
+  }
+fetch_tier: 3
+wait_for: "#dp"
+notes: |
+  Amazon is heavily bot-protected. Tier 3 is recommended; you may need proxies.
+
