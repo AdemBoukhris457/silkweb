@@ -72,6 +72,16 @@
   box-shadow: 0 1px 3px #05966922;
 }
 
+.silkweb-doc-badges {
+  margin-top: 0.35rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.silkweb-doc-badges img {
+  vertical-align: middle;
+}
+
 .md-typeset code {
   font-feature-settings: "liga" 0;
 }

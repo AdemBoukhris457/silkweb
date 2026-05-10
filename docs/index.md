@@ -4,6 +4,14 @@
   <img src="assets/silkweb-banner.svg" alt="Silkweb banner" loading="lazy" />
 </p>
 
+<p align="center" class="silkweb-doc-badges">
+  <a href="https://pypi.org/project/silkweb/"><img src="https://img.shields.io/pypi/v/silkweb.svg" alt="PyPI version" /></a>
+  &nbsp;
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="Python 3.10+" /></a>
+  &nbsp;
+  <a href="https://github.com/AdemBoukhris457/silkweb/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT" /></a>
+</p>
+
 **The LLM-native Python web scraping library. Fetch anything. Extract everything. No selectors required.**
 
 [Quick start](quickstart.md) · [API reference](reference/api.md) · [PyPI](https://pypi.org/project/silkweb/)
