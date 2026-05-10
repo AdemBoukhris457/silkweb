@@ -19,13 +19,13 @@ theme:
     code: Roboto Mono
   palette:
     - scheme: default
-      primary: indigo
+      primary: green
       accent: teal
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
-      primary: indigo
+      primary: green
       accent: teal
       toggle:
         icon: material/brightness-4

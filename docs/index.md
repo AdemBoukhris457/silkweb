@@ -1,5 +1,9 @@
 # Silkweb
 
+<p align="center" class="silkweb-doc-banner">
+  <img src="assets/silkweb-banner.svg" alt="Silkweb banner" loading="lazy" />
+</p>
+
 **The LLM-native Python web scraping library. Fetch anything. Extract everything. No selectors required.**
 
 [Quick start](quickstart.md) · [API reference](reference/api.md) · [PyPI](https://pypi.org/project/silkweb/)

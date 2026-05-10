@@ -1,6 +1,75 @@
+/*
+ * Colors aligned with assets/readme/silkweb-banner.svg (unchanged source of truth):
+ * bg #F7FDF9, accent bars #059669, deep green #064E3B, mint #ECFDF5 / #D1FAE5, emerald #10B981,
+ * body grays #374151 / #6B7280 / #9CA3AF
+ */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #064e3b;
+  --md-primary-fg-color--light: #059669;
+  --md-primary-fg-color--dark: #022c22;
+  --md-accent-fg-color: #059669;
+  --md-typeset-a-color: #047857;
+  --md-default-bg-color: #f7fdf9;
+  --md-code-bg-color: #ecfdf5;
+  --md-footer-bg-color: #ecfdf5;
+  --md-header-bg-color: #f7fdf9;
+  --md-typeset-color: #1f2937;
+}
+
+[data-md-color-scheme="default"] .md-header {
+  background-color: #ecfdf5;
+  color: #064e3b;
+  box-shadow: 0 0 0.2rem #0000000d, 0 0.2rem 0.4rem #0000000d, 0 0 0 0.05rem #05966933 inset;
+}
+
+[data-md-color-scheme="default"] .md-tabs {
+  background-color: #d1fae5;
+  color: #064e3b;
+}
+
+[data-md-color-scheme="default"] .md-nav--primary .md-nav__title {
+  color: #064e3b;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #34d399;
+  --md-primary-fg-color--light: #6ee7b7;
+  --md-primary-fg-color--dark: #10b981;
+  --md-accent-fg-color: #2dd4bf;
+  --md-typeset-a-color: #5eead4;
+  --md-default-bg-color: #022c22;
+  --md-code-bg-color: #064e3b;
+  --md-footer-bg-color: #064e3b;
+  --md-header-bg-color: #022c22;
+  --md-typeset-color: #ecfdf5;
+}
+
+[data-md-color-scheme="slate"] .md-header {
+  background-color: #064e3b;
+  color: #ecfdf5;
+  box-shadow: 0 0 0.2rem #00000040, 0 0.2rem 0.4rem #00000026;
+}
+
+[data-md-color-scheme="slate"] .md-tabs {
+  background-color: #065f46;
+  color: #ecfdf5;
+}
+
 :root {
   --md-typeset-font-size: 0.92rem;
   --md-code-font-size: 0.82em;
+}
+
+.silkweb-doc-banner {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.silkweb-doc-banner img {
+  max-width: min(100%, 720px);
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px #05966922;
 }
 
 .md-typeset code {
