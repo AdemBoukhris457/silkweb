@@ -1,7 +1,7 @@
 """
 Silkweb public API surface.
 
-This project is currently scaffolded from SILKWEB.md; implementations are stubs.
+Project overview and design live in the repository README.md.
 """
 
 from __future__ import annotations
