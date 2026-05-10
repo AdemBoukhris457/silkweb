@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "silkweb"
-version = "0.0.0"
+version = "0.1.0"
 description = "LLM-native Python web scraping library."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -110,8 +110,11 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://pypi.org/project/silkweb/"
-Repository = "https://github.com/your-org/silkweb"
+Homepage = "https://github.com/AdemBoukhris457/silkweb"
+Documentation = "https://ademboukhris457.github.io/silkweb/"
+Repository = "https://github.com/AdemBoukhris457/silkweb"
+Issues = "https://github.com/AdemBoukhris457/silkweb/issues"
+Changelog = "https://github.com/AdemBoukhris457/silkweb/releases"
 
 [project.scripts]
 silkweb = "silkweb.cli.main:app"
