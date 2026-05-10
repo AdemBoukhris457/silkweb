@@ -1,13 +1,18 @@
-![Silkweb](assets/readme/silkweb-banner.svg)
-
 # 🕸️ Silkweb
 
-> **The LLM-native Python web scraping library. Fetch anything. Extract everything. No selectors required.**
+<p align="center">
+  <img src="assets/readme/silkweb-banner.svg" alt="Silkweb banner" />
+</p>
 
-[![PyPI version](https://img.shields.io/pypi/v/silkweb.svg)](https://pypi.org/project/silkweb/)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Downloads](https://img.shields.io/pypi/dm/silkweb.svg)](https://pypi.org/project/silkweb/)
+<p align="center">
+  <a href="https://pypi.org/project/silkweb/"><img src="https://img.shields.io/pypi/v/silkweb.svg" alt="PyPI version" /></a>
+  &nbsp;
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="Python 3.10+" /></a>
+  &nbsp;
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT" /></a>
+</p>
+
+> **The LLM-native Python web scraping library. Fetch anything. Extract everything. No selectors required.**
 
 Silkweb is a fully local, open-source Python library that unifies the entire web scraping stack — HTTP fetching, JavaScript rendering, anti-bot bypass, HTML parsing, and LLM-powered data extraction — behind a single import. It is the first library where you can type a plain-English question and receive a validated, typed Python object, without writing a single CSS selector or XPath expression, with all processing running privately on your own machine.
 
