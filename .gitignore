@@ -29,7 +29,7 @@ Thumbs.db
 *.log
 silkweb_replays/
 
-# Secrets (copy from env.sample)
+# Secrets (create `.env` locally; never commit)
 .env
 .env.local
 

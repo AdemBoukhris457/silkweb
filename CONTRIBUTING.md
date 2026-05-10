@@ -11,7 +11,7 @@ Thanks for helping improve Silkweb.
 python -m pip install -e ".[all]"
 ```
 
-The repository includes a root `.gitignore` (do not commit `*.example` files). Copy `env.sample` to `.env` when you need API keys locally.
+The repository includes a root `.gitignore` (do not commit `*.example` files). Create a local `.env` for API keys when needed; do not commit it.
 
 ### Linting / formatting
 
