@@ -7,6 +7,30 @@ from ...exceptions import SilkwebLLMError
 from .base import LLMProvider, Message, parse_json_loose, with_retries
 
 
+def _openai_prefers_max_completion_tokens(model: str) -> bool:
+    """
+    OpenAI Chat Completions: ``max_tokens`` is deprecated for models that emit
+    reasoning tokens; those models require ``max_completion_tokens`` instead.
+    See API reference (max_completion_tokens vs max_tokens / o-series note).
+    """
+    m = (model or "").strip().lower()
+    if not m:
+        return False
+    if m.startswith(("o1", "o3", "o4")):
+        return True
+    if m.startswith("gpt-5"):
+        return True
+    return False
+
+
+def _chat_completion_token_kwargs(model: str, max_tokens: int | None) -> dict[str, Any]:
+    if max_tokens is None:
+        return {}
+    if _openai_prefers_max_completion_tokens(model):
+        return {"max_completion_tokens": max_tokens}
+    return {"max_tokens": max_tokens}
+
+
 class OpenAIProvider(LLMProvider):
     provider_name = "openai"
 
@@ -38,11 +62,12 @@ class OpenAIProvider(LLMProvider):
 
         async def _call() -> str:
             client = await self._client()
+            tok = _chat_completion_token_kwargs(self.model, max_tokens)
             resp = await client.chat.completions.create(  # type: ignore[attr-defined]
                 model=self.model,
                 messages=req_messages,
-                max_tokens=max_tokens,
                 temperature=temperature,
+                **tok,
             )
             content = resp.choices[0].message.content
             if content is None:
@@ -83,18 +108,21 @@ class OpenAIProvider(LLMProvider):
                 flush=True,
             )
             client = await self._client()
+            tok = _chat_completion_token_kwargs(self.model, max_tokens)
+            tok_label = "max_completion_tokens" if "max_completion_tokens" in tok else "max_tokens"
+            tok_val = tok.get("max_completion_tokens", tok.get("max_tokens", max_tokens))
             print(
                 f"[silkweb]   openai: client ready in {time.perf_counter() - t0:.2f}s, "
-                f"POST chat.completions model={self.model!r} max_tokens={max_tokens}",
+                f"POST chat.completions model={self.model!r} {tok_label}={tok_val}",
                 flush=True,
             )
             t_api = time.perf_counter()
             resp = await client.chat.completions.create(  # type: ignore[attr-defined]
                 model=self.model,
                 messages=req_messages,
-                max_tokens=max_tokens,
                 temperature=temperature,
                 response_format={"type": "json_object"},
+                **tok,
             )
             fr = getattr(resp.choices[0], "finish_reason", None)
             print(

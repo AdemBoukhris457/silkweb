@@ -6,6 +6,7 @@ import pytest
 
 from silkweb.config import configure, get_config
 from silkweb.exceptions import SilkwebConfigError, SilkwebLLMError
+from silkweb.llm.providers.openai import _chat_completion_token_kwargs
 from silkweb.llm.providers.registry import create_provider, parse_model_uri
 
 
@@ -38,6 +39,14 @@ async def test_ollama_generate_and_json(monkeypatch) -> None:
     assert js["ok"] is True
     emb = await p.embed(["a", "b"])
     assert emb == [[0.1, 0.2], [0.1, 0.2]]
+
+
+def test_openai_token_kw_uses_max_completion_for_gpt5_and_o_series() -> None:
+    assert _chat_completion_token_kwargs("gpt-5.4", 100) == {"max_completion_tokens": 100}
+    assert _chat_completion_token_kwargs("gpt-5.4-2026-03-05", 50) == {"max_completion_tokens": 50}
+    assert _chat_completion_token_kwargs("o3-mini", 10) == {"max_completion_tokens": 10}
+    assert _chat_completion_token_kwargs("gpt-4o-mini", 200) == {"max_tokens": 200}
+    assert _chat_completion_token_kwargs("gpt-4o", None) == {}
 
 
 @pytest.mark.anyio
@@ -144,6 +153,40 @@ async def test_llamacpp_generate_and_json(monkeypatch) -> None:
     p = create_provider("llamacpp/C:\\model.gguf")
     assert await p.generate([{"role": "user", "content": "hi"}]) == '{"ok": true}'
     assert (await p.generate_json([{"role": "user", "content": "hi"}]))["ok"] is True
+
+
+@pytest.mark.anyio
+async def test_openai_gpt5_json_uses_max_completion_tokens(monkeypatch) -> None:
+    last: dict = {}
+
+    class FakeChoice:
+        def __init__(self, content: str):
+            self.message = types.SimpleNamespace(content=content)
+
+    class FakeResp:
+        def __init__(self, content: str):
+            self.choices = [FakeChoice(content)]
+
+    class FakeChat:
+        class completions:
+            @staticmethod
+            async def create(**kwargs):
+                last.clear()
+                last.update(kwargs)
+                return FakeResp('{"a": 1}')
+
+    class FakeAsyncOpenAI:
+        def __init__(self, api_key=None, timeout=None):
+            self.chat = FakeChat()
+
+    fake_openai = types.SimpleNamespace(AsyncOpenAI=FakeAsyncOpenAI)
+    monkeypatch.setitem(__import__("sys").modules, "openai", fake_openai)
+
+    p = create_provider("openai/gpt-5.4", api_key="k")
+    js = await p.generate_json([{"role": "user", "content": "hi"}], max_tokens=8192)
+    assert js == {"a": 1}
+    assert last.get("max_completion_tokens") == 8192
+    assert "max_tokens" not in last
 
 
 def test_create_provider_uses_config_llm_timeout_ms() -> None:

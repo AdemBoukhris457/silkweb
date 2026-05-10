@@ -134,7 +134,10 @@ async def fetch(
     headers: dict[str, str] | None = None,
     user_agent: str | None = None,
     stealth_engine: StealthEngine = "auto",
-    wait_until: WaitUntil = "networkidle",
+    # "networkidle" often never completes on SPAs (WebSockets, long-polling, beacons).
+    # Tier 2 Playwright defaults to "load"; match that here. Pass wait_until="networkidle"
+    # when you truly need a quiet network (and the site cooperates).
+    wait_until: WaitUntil = "load",
     timeout: int = 30_000,
     viewport: dict[str, int] | None = None,
     capture_network: bool = False,
@@ -154,6 +157,10 @@ async def fetch(
 
     Cloudflare detection: checks for `cf-ray` header (when available), "Just a moment" title,
     and whether `cf_clearance` cookie appears. If detected, waits up to 30s for resolution.
+
+    Navigation uses Playwright ``wait_until`` (default ``"load"``). Prefer ``"load"`` or
+    ``"domcontentloaded"`` for SPAs; use ``"networkidle"`` only when the page actually
+    reaches an idle network state.
     """
     cfg = config or get_config()
     merged_headers: dict[str, str] = {}
@@ -238,16 +245,25 @@ async def fetch(
                 html = await page.content()
         except Exception as e:
             duration_ms = int((time.perf_counter() - start) * 1000)
+            ctx: dict[str, Any] = {
+                "tier": 3,
+                "engine": "patchright",
+                "duration_ms": duration_ms,
+                "error": repr(e),
+                "wait_until": wait_until,
+            }
+            if wait_until == "networkidle" and (
+                "Timeout" in type(e).__name__ or "timeout" in repr(e).lower()
+            ):
+                ctx["hint"] = (
+                    "networkidle timed out; many SPAs never go idle. "
+                    "Retry with wait_until='load' or 'domcontentloaded' (Tier 3 default is load)."
+                )
             raise SilkwebRenderError(
                 message="Stealth render failed.",
                 url=url,
                 tier_tried=3,
-                context={
-                    "tier": 3,
-                    "engine": "patchright",
-                    "duration_ms": duration_ms,
-                    "error": repr(e),
-                },
+                context=ctx,
             ) from e
         finally:
             await page.close()
@@ -361,16 +377,25 @@ async def fetch(
             html = await page.content()
     except Exception as e:
         duration_ms = int((time.perf_counter() - start) * 1000)
+        ctx2: dict[str, Any] = {
+            "tier": 3,
+            "engine": "playwright",
+            "duration_ms": duration_ms,
+            "error": repr(e),
+            "wait_until": wait_until,
+        }
+        if wait_until == "networkidle" and (
+            "Timeout" in type(e).__name__ or "timeout" in repr(e).lower()
+        ):
+            ctx2["hint"] = (
+                "networkidle timed out; many SPAs never go idle. "
+                "Retry with wait_until='load' or 'domcontentloaded' (Tier 3 default is load)."
+            )
         raise SilkwebRenderError(
             message="Stealth render failed.",
             url=url,
             tier_tried=3,
-            context={
-                "tier": 3,
-                "engine": "playwright",
-                "duration_ms": duration_ms,
-                "error": repr(e),
-            },
+            context=ctx2,
         ) from e
     finally:
         await page.close()

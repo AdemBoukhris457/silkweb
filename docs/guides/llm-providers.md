@@ -40,8 +40,22 @@ Requires [Ollama](https://ollama.ai) running at `localhost:11434`.
 
 ### OpenAI
 
+Use the **`openai/<model_id>`** URI form. The **`model_id`** is whatever OpenAI’s **Chat Completions** API expects for `model=` (for example `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`). Silkweb passes that string through unchanged; it is **not** a Silkweb-specific name, so invalid ids (typos or non-existent models) fail at request time with `SilkwebLLMError`.
+
 ```python
 silkweb.configure(extraction_model="openai/gpt-4o")
+# or, for smaller / cheaper calls:
+silkweb.configure(extraction_model="openai/gpt-4o-mini")
+```
+
+You can point **cleaner**, **schema**, and **extraction** at the same or different models:
+
+```python
+silkweb.configure(
+    cleaner_model="openai/gpt-4o-mini",
+    schema_model="openai/gpt-4o-mini",
+    extraction_model="openai/gpt-4o-mini",
+)
 ```
 
 Uses the `OPENAI_API_KEY` environment variable, or set it explicitly:
@@ -51,6 +65,8 @@ silkweb.configure(api_keys={"openai": "sk-..."})
 ```
 
 OpenAI's native `json_object` response format is used automatically for structured extraction.
+
+For **GPT-5** (`gpt-5…`) and **o-series** (`o1…`, `o3…`, `o4…`) Chat Completions models, OpenAI expects **`max_completion_tokens`** instead of legacy **`max_tokens`**. Silkweb sends the right parameter for those model ids when capping output (for example from `extraction_max_tokens`).
 
 ### Anthropic
 

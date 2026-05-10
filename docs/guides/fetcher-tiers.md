@@ -124,6 +124,22 @@ For pages with aggressive anti-bot protection (Cloudflare, Akamai, etc.).
 page = silkweb.fetch("https://protected-site.com", tier=3)
 ```
 
+Tier 3 forwards the same browser-style kwargs as Tier 2 where applicable, including:
+
+- `wait_until`: `"load"` (default), `"domcontentloaded"`, or `"networkidle"`. The default is **`load`** so SPAs and analytics-heavy pages do not hang forever waiting for a quiet network (`networkidle` is easy to exceed the navigation timeout on sites with long-lived connections).
+- `timeout`: navigation timeout in ms (default `30_000`; raise for slow first paints).
+- `stealth_engine`: `"auto"` (patchright when installed), `"patchright"`, `"camoufox"`, or `"nodriver"`.
+- `viewport`, `proxy`, `capture_network`, `capture_network_bodies`, etc.
+
+```python
+page = silkweb.fetch(
+    "https://skills.sh/aws-samples/sample-strands-agent-with-agentcore/financial-news",
+    tier=3,
+    wait_until="load",
+    timeout=60_000,
+)
+```
+
 Stealth engines (in priority order):
 
 1. **patchright** — patched Playwright fork (preferred default when installed)
