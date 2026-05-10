@@ -1,3 +1,5 @@
+![Silkweb](assets/readme/silkweb-banner.svg)
+
 # 🕸️ Silkweb
 
 > **The LLM-native Python web scraping library. Fetch anything. Extract everything. No selectors required.**

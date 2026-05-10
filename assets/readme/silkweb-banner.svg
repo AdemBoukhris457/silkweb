@@ -1,0 +1,78 @@
+<svg width="100%" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Silkweb — LLM-native Python web scraping</title>
+
+<rect width="680" height="220" fill="#F7FDF9"/>
+<rect width="680" height="3" fill="#059669"/>
+<rect y="217" width="680" height="3" fill="#059669"/>
+
+<!-- spokes -->
+<g stroke="#064E3B" stroke-width="1" stroke-linecap="round" opacity="0.5">
+  <line x1="170" y1="110" x2="256" y2="110"/>
+  <line x1="170" y1="110" x2="231" y2="171"/>
+  <line x1="170" y1="110" x2="170" y2="196"/>
+  <line x1="170" y1="110" x2="109" y2="171"/>
+  <line x1="170" y1="110" x2="84"  y2="110"/>
+  <line x1="170" y1="110" x2="109" y2="49"/>
+  <line x1="170" y1="110" x2="170" y2="24"/>
+  <line x1="170" y1="110" x2="231" y2="49"/>
+</g>
+
+<!-- ring 1 -->
+<polyline fill="none" stroke="#064E3B" stroke-width="0.9" opacity="0.7"
+  points="192,110 186,126 170,132 154,126 148,110 154,94 170,88 186,94 192,110"/>
+<!-- ring 2 -->
+<polyline fill="none" stroke="#064E3B" stroke-width="0.85" opacity="0.55"
+  points="214,110 201,141 170,154 139,141 126,110 139,79 170,66 201,79 214,110"/>
+<!-- ring 3 -->
+<polyline fill="none" stroke="#064E3B" stroke-width="0.75" opacity="0.4"
+  points="236,110 217,157 170,176 123,157 104,110 123,63 170,44 217,63 236,110"/>
+<!-- ring 4 -->
+<polyline fill="none" stroke="#064E3B" stroke-width="0.65" opacity="0.25"
+  points="256,110 231,171 170,196 109,171 84,110 109,49 170,24 231,49 256,110"/>
+
+<!-- nodes -->
+<circle cx="170" cy="110" r="4"   fill="#059669" opacity="0.9"/>
+<circle cx="192" cy="110" r="2.2" fill="#059669" opacity="0.8"/>
+<circle cx="214" cy="110" r="2"   fill="#059669" opacity="0.7"/>
+<circle cx="170" cy="88"  r="2"   fill="#059669" opacity="0.7"/>
+<circle cx="186" cy="94"  r="1.8" fill="#059669" opacity="0.6"/>
+<circle cx="201" cy="79"  r="1.8" fill="#10B981" opacity="0.7"/>
+<circle cx="217" cy="63"  r="1.6" fill="#10B981" opacity="0.55"/>
+<circle cx="170" cy="44"  r="1.6" fill="#10B981" opacity="0.55"/>
+
+<line x1="284" y1="22" x2="284" y2="198" stroke="#D1FAE5" stroke-width="1.5"/>
+
+<!-- title -->
+<text x="482" y="92"
+  font-family="Verdana,Geneva,sans-serif"
+  font-size="54" font-weight="700"
+  fill="#064E3B" letter-spacing="2"
+  text-anchor="middle">silkweb</text>
+
+<!-- tagline -->
+<text x="482" y="122"
+  font-family="Verdana,Geneva,sans-serif"
+  font-size="13" fill="#374151"
+  text-anchor="middle">LLM-native web scraping for Python</text>
+
+<!-- features -->
+<text x="482" y="142"
+  font-family="Verdana,Geneva,sans-serif"
+  font-size="10" fill="#6B7280"
+  text-anchor="middle">auto-extract · no selectors · local LLM · open source</text>
+
+<!-- pip install -->
+<rect x="362" y="154" width="240" height="30" rx="6" fill="#ECFDF5"/>
+<rect x="362" y="154" width="240" height="30" rx="6" fill="none" stroke="#059669" stroke-width="1" opacity="0.4"/>
+<text x="482" y="174"
+  font-family="'Courier New',Courier,monospace"
+  font-size="13.5" fill="#064E3B"
+  text-anchor="middle">pip install silkweb</text>
+
+<!-- footer -->
+<text x="482" y="202"
+  font-family="Verdana,Geneva,sans-serif"
+  font-size="9" fill="#9CA3AF"
+  text-anchor="middle">Python 3.10+  ·  open source</text>
+
+</svg>
