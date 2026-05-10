@@ -1,0 +1,67 @@
+name: Feature request
+description: Propose a new capability or a meaningful improvement to existing behavior.
+title: "[Feature]: "
+labels:
+  - enhancement
+  - triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Large or API-breaking changes are easier to land after a short design discussion. Prefer linking prior context or a draft PR if you already have one.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before you submit
+      description: Issue list — https://github.com/AdemBoukhris457/silkweb/issues
+      options:
+        - label: I searched existing issues for similar requests.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What are you trying to achieve, and why is the current library insufficient?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior or API you want. Sketches, pseudocode, or examples welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches, workarounds, or libraries you considered.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Rough scope (optional)
+      description: Helps maintainers route the issue; not a commitment to implement as proposed.
+      options:
+        - Unsure / leave to maintainers
+        - Small (localized change)
+        - Medium (multiple modules or new optional dependency)
+        - Large (architecture, public API, or cross-cutting behavior)
+      default: 0
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to open a PR for this if the direction is agreed.
+          required: false

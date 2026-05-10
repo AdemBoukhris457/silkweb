@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: Documentation
+    url: https://ademboukhris457.github.io/silkweb/
+    about: User guide, API reference, and guides on GitHub Pages.
+
+  - name: PyPI
+    url: https://pypi.org/project/silkweb/
+    about: Install and release metadata for the silkweb package.
+
+  - name: Contributing guide
+    url: https://github.com/AdemBoukhris457/silkweb/blob/main/CONTRIBUTING.md
+    about: Dev setup, tests, linting, and how to open pull requests.

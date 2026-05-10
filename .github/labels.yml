@@ -1,0 +1,75 @@
+# Canonical label definitions for this repository.
+# Synced to GitHub by .github/workflows/sync-labels.yml on push to main (when this file changes) or manual run.
+# Colors are hex without a leading #.
+
+- name: triage
+  color: FFB86C
+  description: Needs initial maintainer review or more information from the reporter.
+
+- name: bug
+  color: D73A4A
+  description: Unintended behavior, regression, or incorrect results relative to documented behavior.
+
+- name: enhancement
+  color: A2EEEF
+  description: New capability, improvement to existing behavior, or API extension (non-breaking by default).
+
+- name: documentation
+  color: 0075CA
+  description: Documentation, examples, docstrings, or the published docs site.
+
+- name: question
+  color: D876E3
+  description: Question or support request; may be converted to documentation or closed if out of scope.
+
+- name: dependencies
+  color: 0366D6
+  description: Dependency updates (for example Dependabot or manual version bumps).
+
+- name: good first issue
+  color: 7057FF
+  description: Reasonable scope for someone new to the codebase.
+
+- name: duplicate
+  color: CFD3D7
+  description: Superseded by or duplicate of another issue.
+
+- name: invalid
+  color: E4E669
+  description: Not reproducible, not applicable, or does not follow the issue template.
+
+- name: wontfix
+  color: E6E6E6
+  description: Closed by maintainers; not planned or not aligned with project goals.
+
+- name: performance
+  color: F9D0C4
+  description: Throughput, latency, memory, or CPU-related improvement.
+
+- name: blocked
+  color: B60205
+  description: Cannot proceed until an external dependency, decision, or upstream fix lands.
+
+- name: area:fetch
+  color: 0E8A16
+  description: HTTP fetching, tier escalation, stealth HTTP, or transport-level behavior.
+
+- name: area:browser
+  color: 1D76DB
+  description: Browser rendering, Playwright, or JS-heavy page handling.
+
+- name: area:llm
+  color: 5319E7
+  description: LLM extraction, providers, orchestration, schemas, or caching of synthesized selectors.
+
+- name: area:silkql
+  color: BFDADC
+  description: SilkQL language, compiler, or query execution.
+
+- name: area:cli
+  color: FEF2C0
+  description: Command-line interface (Typer) or developer tooling entrypoints.
+
+- name: area:cache
+  color: C2E0C6
+  description: Disk or rendered page cache, persistence, or invalidation behavior.

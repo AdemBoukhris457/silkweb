@@ -1,0 +1,41 @@
+name: Documentation
+description: Report unclear, incorrect, or missing documentation (including the docs site and README).
+title: "[Docs]: "
+labels:
+  - documentation
+  - triage
+
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before you submit
+      description: Published docs — https://ademboukhris457.github.io/silkweb/
+      options:
+        - label: I checked the published documentation where relevant.
+          required: false
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Page title, path under `docs/`, README section, or URL.
+      placeholder: e.g. docs/guides/llm-extraction.md or Quick Start
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is wrong or missing?
+      description: Quote or summarize the current text if that helps.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: Concrete wording, example code, or structure you would find clearer.
+    validations:
+      required: false

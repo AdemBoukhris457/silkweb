@@ -1,0 +1,47 @@
+name: Question
+description: Ask for clarification or help after reading the docs (not for security-sensitive reports).
+title: "[Question]: "
+labels:
+  - question
+  - triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For **security vulnerabilities**, use [GitHub Security advisories](https://github.com/AdemBoukhris457/silkweb/security/advisories/new) if enabled for this repository, instead of a public issue.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before you submit
+      description: Docs — https://ademboukhris457.github.io/silkweb/ · Contributing — https://github.com/AdemBoukhris457/silkweb/blob/main/CONTRIBUTING.md
+      options:
+        - label: I read the relevant documentation and CONTRIBUTING sections where applicable.
+          required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What are you trying to do, and where are you stuck?
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: silkweb version (optional)
+      description: Helps narrow down behavior between releases.
+      placeholder: e.g. 0.1.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Code or configuration snippet (optional)
+      description: Minimal example. **Do not paste secrets.**
+      render: python
+    validations:
+      required: false

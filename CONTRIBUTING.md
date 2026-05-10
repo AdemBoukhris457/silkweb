@@ -14,6 +14,12 @@ Keep discussion constructive and respectful. Assume good intent. If you are unsu
 
 Search [existing issues](https://github.com/AdemBoukhris457/silkweb/issues) before filing a duplicate.
 
+On GitHub, use the **issue templates** (bug report, feature request, documentation, question) so the right labels and fields are applied and triage stays fast.
+
+## Labels (maintainers)
+
+Label names and colors are defined in `.github/labels.yml`. The **Sync labels** workflow updates GitHub when that file changes on `main`, or when you run it manually under **Actions**. Keep that file as the source of truth so issue templates and automation stay aligned.
+
 ## Pull requests
 
 - Open PRs against **`main`**.

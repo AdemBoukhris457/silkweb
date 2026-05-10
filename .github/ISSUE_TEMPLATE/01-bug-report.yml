@@ -1,0 +1,90 @@
+name: Bug report
+description: Report unintended behavior, a regression, or incorrect results.
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. **Do not paste secrets** (API keys, cookies, auth headers, or private URLs). Use placeholders such as `REDACTED`.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before you submit
+      description: Issue list — https://github.com/AdemBoukhris457/silkweb/issues
+      options:
+        - label: I searched existing issues for duplicates.
+          required: true
+        - label: I am using a supported Python version (3.10+) and a recent silkweb install where applicable.
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences describing the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened, or what the docs imply should happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead, including error messages if any.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal code, URL shape (no private data), and commands to reproduce reliably.
+      placeholder: |
+        ```python
+        import silkweb
+        ...
+        ```
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: silkweb version
+      description: Output of `pip show silkweb` (version line) or the version constraint you use.
+      placeholder: e.g. 0.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, and relevant extras (for example browser, Ollama) if they matter.
+      placeholder: |
+        - OS:
+        - Python:
+        - Optional extras in use:
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or traceback
+      description: Paste relevant output. Redact tokens and personal data.
+      render: shell
+    validations:
+      required: false
