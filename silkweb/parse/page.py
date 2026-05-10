@@ -274,6 +274,31 @@ class SilkPage:
                         items.append(x)
         return items
 
+    def hydration_source(self) -> str | None:
+        """Which hydration script produced JSON, if any (before JSON parse)."""
+        next_data = self._lxml_root.xpath("//script[@id='__NEXT_DATA__']/text()")
+        for s in next_data:
+            if isinstance(s, str) and s.strip():
+                parsed = _safe_json_loads(s.strip())
+                if isinstance(parsed, dict):
+                    return "__NEXT_DATA__"
+        nuxt_tagged = self._lxml_root.xpath("//script[@id='__NUXT_DATA__']/text()")
+        for s in nuxt_tagged:
+            if isinstance(s, str) and s.strip():
+                parsed = _safe_json_loads(s.strip())
+                if isinstance(parsed, dict):
+                    return "__NUXT_DATA__"
+        scripts = self._lxml_root.xpath("//script/text()")
+        for s in scripts:
+            if not isinstance(s, str):
+                continue
+            m = re.search(r"__NUXT__\s*=\s*(\{.*\})\s*;?\s*$", s.strip(), flags=re.DOTALL)
+            if m:
+                parsed = _safe_json_loads(m.group(1))
+                if isinstance(parsed, dict):
+                    return "__NUXT__"
+        return None
+
     def hydration_data(self) -> dict[str, Any] | None:
         # Next.js
         next_data = self._lxml_root.xpath("//script[@id='__NEXT_DATA__']/text()")

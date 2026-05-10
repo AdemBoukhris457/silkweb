@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from pydantic import BaseModel
 
 from ...cache.selectors import SelectorCache
+from ...explain import ExtractionReport
 from ...exceptions import SilkwebSchemaError, SilkwebSelectorError
 from ...observability.logging import log_event
 from ...observability.metrics import get_metrics
@@ -131,6 +132,7 @@ async def extract_url(
     selector_cache: SelectorCache,
     healer: SelfHealer | None = None,
     force_llm: bool = False,
+    report: ExtractionReport | None = None,
 ) -> list[dict[str, Any]]:
     """
     High-level extraction orchestrator.
@@ -143,6 +145,9 @@ async def extract_url(
     dom = _domain(url)
     skeleton = _make_skeleton_key(html, schema)
     t_extract_url = time.perf_counter()
+
+    if report is not None:
+        report.selector_cache_key = f"{dom}:{skeleton}"
 
     cached = None if force_llm else selector_cache.get(dom, skeleton)
     if cached is not None:
@@ -177,6 +182,8 @@ async def extract_url(
                 duration_ms=int((time.perf_counter() - t_extract_url) * 1000),
                 items=len(results),
             )
+            if report is not None:
+                report.selector_cache_hit = True
             return results
         except Exception as exc:
             log_event(
@@ -199,8 +206,13 @@ async def extract_url(
         html_chars=len(html or ""),
     )
 
+    if report is not None:
+        report.selector_cache_hit = False
+
     t0 = time.perf_counter()
     cleaned = await clean_html(html, provider=cleaner_provider, strategy="auto")
+    if report is not None:
+        report.note_llm(cleaner_provider)
     dt_clean = time.perf_counter() - t0
     log_event(
         "extract_pipeline_clean_done",
@@ -214,6 +226,8 @@ async def extract_url(
     t1 = time.perf_counter()
     log_event("extract_pipeline_extract_start", url=url, tier=None, phase="extract_data")
     items = await extract_data(cleaned, schema=schema, prompt=prompt, provider=extraction_provider)
+    if report is not None:
+        report.note_llm(extraction_provider)
     dt_extract = time.perf_counter() - t1
     log_event(
         "extract_pipeline_extract_done",
@@ -241,6 +255,7 @@ async def extract_url(
             cache=selector_cache,
             healer=healer,
             skeleton_key=skeleton,
+            report=report,
         )
         dt_heal = time.perf_counter() - th
         log_event(
@@ -257,6 +272,8 @@ async def extract_url(
         selector_set = await compile_selectors(
             extracted=items, schema=schema, html=html, provider=selector_provider
         )
+        if report is not None:
+            report.note_llm(selector_provider)
         dt_sel = time.perf_counter() - t2
         log_event(
             "extract_pipeline_compile_done",

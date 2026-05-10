@@ -54,6 +54,7 @@ from .cache.selectors import SelectorCache
 from .config import SilkwebConfig, configure, get_config
 from .crawl.crawler import AsyncCrawler
 from .discover import discover_api as _async_discover_api
+from .explain import ExtractionReport, pydantic_schema_line, render as _render_extraction_report
 from .exceptions import (
     SilkwebBlockedError,
     SilkwebCacheError,
@@ -431,10 +432,12 @@ def _best_effort_hydration_subset(hydration: dict[str, Any]) -> Any:
 def ask(
     url: str,
     prompt: str,
+    *,
+    explain: bool = False,
     **fetch_kwargs: Any,
 ):
     """Sync wrapper around `async_ask`."""
-    return _run_sync(async_ask(url, prompt, **fetch_kwargs))
+    return _run_sync(async_ask(url, prompt, explain=explain, **fetch_kwargs))
 
 
 async def async_ask(
@@ -443,6 +446,7 @@ async def async_ask(
     *,
     output: str = "auto",
     dataframe_engine: str = "auto",
+    explain: bool = False,
     **fetch_kwargs: Any,
 ):
     """
@@ -472,6 +476,9 @@ async def async_ask(
 
     import time as _t
 
+    report: ExtractionReport | None = ExtractionReport() if explain else None
+    _wall0 = _t.time()
+
     _t0 = _t.time()
     page = await _async_fetch(url, tier="auto", **fetch_kwargs)
     _t_fetch = _t.time() - _t0
@@ -482,6 +489,12 @@ async def async_ask(
         duration_ms=int(_t_fetch * 1000),
         html_chars=len(page.html or ""),
     )
+
+    if report is not None:
+        from .explain import tier_name_for_page
+
+        report.tier_used = int(getattr(page, "fetch_tier", 0) or 0)
+        report.tier_name = tier_name_for_page(report.tier_used, page)
 
     selector_cache = CacheManager.from_config().selectors
 
@@ -540,6 +553,12 @@ async def async_ask(
             token_estimate=getattr(cleaned, "token_estimate", None),
         )
 
+    if report is not None:
+        if hydration_any is not None:
+            report.hydration_source = page.hydration_source()
+        else:
+            report.hydration_source = None
+
     _t2 = _t.time()
     log_event("ask_schema_start", url=url, tier=getattr(page, "fetch_tier", None))
     schema = await synthesize_schema(cleaned, prompt=prompt, provider=schema_provider)
@@ -550,6 +569,10 @@ async def async_ask(
         duration_ms=int((_t.time() - _t2) * 1000),
         fields=list(getattr(schema, "model_fields", {}).keys()),
     )
+
+    if report is not None:
+        report.note_llm(schema_provider)
+        report.schema_inferred = pydantic_schema_line(schema)
 
     _t3 = _t.time()
     log_event("ask_extract_start", url=url, tier=getattr(page, "fetch_tier", None))
@@ -564,6 +587,7 @@ async def async_ask(
         selector_cache=selector_cache,
         healer=healer,
         force_llm=force_llm,
+        report=report,
     )
     log_event(
         "ask_extract_done",
@@ -572,6 +596,11 @@ async def async_ask(
         duration_ms=int((_t.time() - _t3) * 1000),
         items=len(items),
     )
+
+    if report is not None:
+        report.records_extracted = len(items)
+        report.total_duration_ms = (_t.time() - _wall0) * 1000.0
+        _render_extraction_report(report)
 
     # Scalar convenience: single item + single field
     if len(items) == 1 and len(schema.model_fields) == 1:
@@ -593,9 +622,9 @@ async def async_ask(
     return df if df is not None else items
 
 
-def extract(url: str, schema, prompt: str, **kwargs: Any):
+def extract(url: str, schema, prompt: str, *, explain: bool = False, **kwargs: Any):
     """Sync wrapper around `async_extract`."""
-    return _run_sync(async_extract(url, schema, prompt, **kwargs))
+    return _run_sync(async_extract(url, schema, prompt, explain=explain, **kwargs))
 
 
 async def async_extract(
@@ -605,6 +634,7 @@ async def async_extract(
     *,
     output: str = "python",
     dataframe_engine: str = "auto",
+    explain: bool = False,
     **kwargs: Any,
 ):
     """
@@ -631,6 +661,9 @@ async def async_extract(
 
     import time as _t
 
+    report: ExtractionReport | None = ExtractionReport() if explain else None
+    _wall0 = _t.time()
+
     _t0 = _t.time()
     page = await _async_fetch(url, tier="auto", **kwargs)
     _t_fetch = _t.time() - _t0
@@ -641,6 +674,14 @@ async def async_extract(
         duration_ms=int(_t_fetch * 1000),
         html_chars=len(page.html or ""),
     )
+
+    if report is not None:
+        from .explain import tier_name_for_page
+
+        report.tier_used = int(getattr(page, "fetch_tier", 0) or 0)
+        report.tier_name = tier_name_for_page(report.tier_used, page)
+        report.hydration_source = None
+        report.schema_inferred = pydantic_schema_line(schema)
 
     selector_cache = CacheManager.from_config().selectors
 
@@ -658,6 +699,7 @@ async def async_extract(
         selector_cache=selector_cache,
         healer=healer,
         force_llm=force_llm,
+        report=report,
     )
     log_event(
         "extract_llm_done",
@@ -666,6 +708,11 @@ async def async_extract(
         duration_ms=int((_t.time() - _t1) * 1000),
         items=len(items),
     )
+
+    if report is not None:
+        report.records_extracted = len(items)
+        report.total_duration_ms = (_t.time() - _wall0) * 1000.0
+        _render_extraction_report(report)
 
     return _finalize_extract_output(
         items,

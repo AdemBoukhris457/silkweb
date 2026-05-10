@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from pydantic import BaseModel
 
 from ...cache.selectors import SelectorCache, dom_skeleton_hash
+from ...explain import ExtractionReport
 from ...exceptions import SilkwebExtractionError
 from ...observability.logging import log_event
 from ..pipelines.clean import clean_html
@@ -84,6 +85,7 @@ async def heal(
     cache: SelectorCache,
     healer: SelfHealer | None = None,
     skeleton_key: str | None = None,
+    report: ExtractionReport | None = None,
 ) -> list[dict[str, Any]]:
     """
     Self-healing loop for selector-based extraction failures.
@@ -115,16 +117,22 @@ async def heal(
         try:
             t0 = time.perf_counter()
             cleaned = await clean_html(html, provider=cleaner_provider, strategy="auto")
+            if report is not None:
+                report.note_llm(cleaner_provider)
             dt_clean = time.perf_counter() - t0
             t1 = time.perf_counter()
             items = await extract_data(
                 cleaned, schema=schema, prompt=prompt, provider=extraction_provider
             )
+            if report is not None:
+                report.note_llm(extraction_provider)
             dt_extract = time.perf_counter() - t1
             t2 = time.perf_counter()
             selector_set: SelectorSet = await compile_selectors(
                 extracted=items, schema=schema, html=html, provider=selector_provider
             )
+            if report is not None:
+                report.note_llm(selector_provider)
             dt_compile = time.perf_counter() - t2
             cache.set(domain, skeleton, selector_set)
             log_event("selector_cached", url=url, tier=None, domain=domain, healed=True)
